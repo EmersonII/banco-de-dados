@@ -1,0 +1,54 @@
+create table proprietarios (
+    id_proprietario int primary key,
+    nome_proprietario varchar(60) not null,
+    cpf_proprietario char(11) not null,
+    tel_proprietario char(11) not null,
+    end_proprietario varchar(70) not null
+)
+
+create table carros (
+    id_carro int primary key,
+    nome_carro varchar(30) not null,
+    ano_carro char(4) not null,
+    marca_carro varchar(30) not null,
+    modelo_carro varchar(20) not null,
+    km_carro int not null,
+    fk_proprietarios_id_proprietario int not null,
+    foreign key (fk_proprietarios_id_proprietario)
+        references proprietarios (id_proprietario)
+)
+
+create table mecanicos (
+    id_mecanico int primary key,
+    nome_mecanico varchar(60) not null,
+    especialidade_mecanico varchar(30) not null,
+    tel_mecanico char(11) not null,
+    end_mecanico varchar(70) not null
+)
+
+create table peca (
+    id_peca int primary key,
+    nome_peca varchar(60) not null,
+    valor_peca int not null
+)
+
+create table execucao_agendamento (
+    id_agendamento int primary key,
+    dataent_agendamento date not null,
+    datasaida_agendamento date not null,
+    horarioent_agendamento time not null,
+    horariosaida_agendamento time not null,
+    problema_agendamento varchar(100) not null,
+    fk_mecanicos_id_mecanico int not null,
+    fk_carros_id_carro int not null,
+    foreign key (fk_mecanicos_id_mecanico) references mecanicos (id_mecanico),
+    foreign key (fk_carros_id_carro) references carros (id_carro)
+)
+
+create table execucao_peca (
+    fk_execucao_agendamento_id_agendamento int not null,
+    fk_peca_id_peca int not null,
+    primary key (fk_execucao_agendamento_id_agendamento, fk_peca_id_peca),
+    foreign key (fk_execucao_agendamento_id_agendamento) references execucao_agendamento (id_agendamento),
+    foreign key (fk_peca_id_peca) references peca (id_peca)
+)
